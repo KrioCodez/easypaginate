@@ -32,8 +32,8 @@ const Settings = new Paginator({
         text: "▶", // [OPTIONAL] the text of the next page button.
         style: 1 // [OPTIONAL] style of the button. Can be any number from 1 to 3.
     },
-    timeoutInSeconds: 30 // [OPTIONAL] timeout time. Will reset on button press. Timeouts when no input.
-    displayPages: true // [OPTIONAL] displays the current page and total pages. Comes with watermark.
+    timeoutInSeconds: 30, // [OPTIONAL] timeout time. Will reset on button press. Timeouts when no input.
+    displayPages: true, // [OPTIONAL] displays the current page and total pages. Comes with watermark.
     isInteraction: false // <REQUIRED> set true if your bot uses slash commands, false if it doesnt.
 })
 ```
