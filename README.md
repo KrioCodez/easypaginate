@@ -5,6 +5,7 @@
 # Paginatocord
 ## 📝 D E T A I L S:
 - This package is very usefull for those who are looking for a very easy to use and customize pagination for discord embeds.
+- This package can work with both slash command bots and prefix bots!
 
 ---
 
