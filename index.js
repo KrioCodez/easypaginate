@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder } = require("@discordjs/builders");
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 
 module.exports = class Setting {
     constructor(details = {}) {
@@ -24,10 +24,10 @@ module.exports = class Setting {
      */
 
     async paginate(message, embeds) {
-        if (!message) throw new Error("Message/Interaction arguement not given! [easypaginate]");
-        if (!embeds || embeds.length < 0) throw new Error("Embeds given are invalid! [easypaginate]")
+        if (!message) throw new Error("Message/Interaction arguement not given! [paginatocord]");
+        if (!embeds || embeds.length < 0) throw new Error("Embeds given are invalid! [paginatocord]")
         try {
-            const { isInteraction, displayPages, nextButton, previousButton, timeoutInSeconds } = this.details;
+            const { isInteraction, displayPages, nextButton, previousButton, timeoutInSeconds, errors } = this.details;
             var user;
             if (isInteraction === true) user = message.user;
             else user = message.author;
@@ -43,7 +43,7 @@ module.exports = class Setting {
                 .setStyle(nextButton.style)
             );
             if (displayPages === true) {
-                embeds[0].setFooter({ text: `Powered by easypaginate ◆ ${currentPage+1}/${embeds.length}` });
+                embeds[0].setFooter({ text: `Powered by paginatocord ◆ ${currentPage+1}/${embeds.length}` });
             }
             var sentMessage;
             if (isInteraction === true) {
@@ -64,7 +64,7 @@ module.exports = class Setting {
                 if (i.customId == "previous") {
                     if (embeds[currentPage - 1]) {
                         currentPage = currentPage - 1;
-                        embeds[currentPage].setFooter({ text: `Powered by easypaginate ◆ ${currentPage + 1}/${embeds.length}` });
+                        if (displayPages) embeds[currentPage].setFooter({ text: `Powered by paginatocord ◆ ${currentPage + 1}/${embeds.length}` });
             
                         if (isInteraction) {
                             await message.editReply({ embeds: [embeds[currentPage]], components: [buttons] });
@@ -72,14 +72,14 @@ module.exports = class Setting {
                             await sentMessage.edit({ embeds: [embeds[currentPage]], components: [buttons] });
                         }
                     } else {
-                        await i.followUp({ content: "This is the first page!", ephemeral: true });
+                        await i.followUp({ content: errors.previous, ephemeral: true });
                     }
                 }
             
                 if (i.customId == "next") {
                     if (embeds[currentPage + 1]) {
                         currentPage = currentPage + 1;
-                        embeds[currentPage].setFooter({ text: `Powered by easypaginate ◆ ${currentPage + 1}/${embeds.length}` });
+                        if (displayPages) embeds[currentPage].setFooter({ text: `Powered by paginatocord ◆ ${currentPage + 1}/${embeds.length}` });
             
                         if (isInteraction) {
                             await message.editReply({ embeds: [embeds[currentPage]], components: [buttons] });
@@ -87,7 +87,7 @@ module.exports = class Setting {
                             await sentMessage.edit({ embeds: [embeds[currentPage]], components: [buttons] });
                         }
                     } else {
-                        await i.followUp({ content: "This is the last page!", ephemeral: true });
+                        await i.followUp({ content: errors.next, ephemeral: true });
                     }
                 }
             
@@ -104,7 +104,7 @@ module.exports = class Setting {
                 }
             })
         } catch(e) {
-            throw new Error(`Error while pagination [easypaginate]: ${e}`);
+            throw new Error(`Error while pagination [paginatocord]: ${e}`);
         }
     }
 }
