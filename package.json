@@ -1,5 +1,38 @@
 {
   "dependencies": {
     "discord.js": "^14.18.0"
-  }
+  },
+  "name": "paginatocord",
+  "version": "1.0.0",
+  "description": "Easiest way to paginate embeds in discord.js",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KrioCodez/easypaginate.git"
+  },
+  "keywords": [
+    "discord.js",
+    "embeds",
+    "discord",
+    "keywords",
+    "words",
+    "easy",
+    "paginate",
+    "interactions",
+    "discord-interaction",
+    "canvas",
+    "embed",
+    "numbers",
+    "pages"
+  ],
+  "author": "phantom_raja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KrioCodez/easypaginate/issues"
+  },
+  "homepage": "https://github.com/KrioCodez/easypaginate#readme"
 }
