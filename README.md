@@ -1,8 +1,8 @@
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=3000&color=F70000&background=000000&center=true&vCenter=true&width=435&lines=EasyPaginate;Make+paginations+easy;supports+latest+discord.js+versions!;Made+by+phantom_raja" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=3000&color=F70000&background=000000&center=true&vCenter=true&width=435&lines=Paginatocord;Make+paginations+easy;supports+latest+discord.js+versions!;Made+by+phantom_raja" alt="Typing SVG" /></a>
 
 ---
 
-# EasyPaginate
+# Paginatocord
 ## 📝 D E T A I L S:
 - This package is very usefull for those who are looking for a very easy to use and customize pagination for discord embeds.
 
@@ -11,18 +11,18 @@
 ## ⚙ I N S T A L L A T I O N:
 - to use this package, You can install it thru npm 
 ```bash
-npm install easypaginate@latest
+npm install paginatocord@latest
 ```
 
 ## 💻 F U N C T I O N S:
 To set this up, this package returns a class when required. We can use that class to configure the pagination system however we want!
 
 ```js
-const Paginator = require("easypaginate")
+const Paginator = require("paginatocord")
 const Settings = new Paginator({
     errors: {
         previous: "This is the first page!", // [OPTIONAL] displays when no more pages behind.
-        next: "This is the last page!" // [OPTIONAL] displays when no more pages left.
+        neeasypaginatorxt: "This is the last page!" // [OPTIONAL] displays when no more pages left.
     },
     previousButton: {
         text: "◀", // [OPTIONAL] the text of the previous page button.
@@ -62,7 +62,11 @@ client.on("messageCreate", async (message) => {
 })
 ```
 
+
+
 ---
+The watermark here says "easy paginate" but later I changed it to paginatocord
+
 ## 👀 P R E V I E W:
 <img title="First Page" alt="Alt text" src="./screenshots/page 1.png">
 <img title="Second Page" alt="Alt text" src="./screenshots/page 2.png">
