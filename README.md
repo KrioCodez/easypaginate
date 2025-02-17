@@ -22,7 +22,7 @@ const Paginator = require("paginatocord")
 const Settings = new Paginator({
     errors: {
         previous: "This is the first page!", // [OPTIONAL] displays when no more pages behind.
-        neeasypaginatorxt: "This is the last page!" // [OPTIONAL] displays when no more pages left.
+        next: "This is the last page!" // [OPTIONAL] displays when no more pages left.
     },
     previousButton: {
         text: "◀", // [OPTIONAL] the text of the previous page button.
