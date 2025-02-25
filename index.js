@@ -2,6 +2,13 @@ const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 
 module.exports = class Setting {
     constructor(details = {}) {
+        if (!details.superSkip) details.superSkip = true;
+        if (!details.lastButton) details.lastButton = {};
+        if (!details.lastButton.text || typeof details.lastButton.text !== "string") details.lastButton.text = "⏩";
+        if (!details.lastButton.style || typeof details.lastButton.style !== "number" || details.lastButton.style > 3 || details.lastButton.style <= 0) details.lastButton.style = 2;
+        if (!details.firstButton) details.firstButton = {};
+        if (!details.firstButton.text || typeof details.firstButton.text !== "string") details.firstButton.text = "⏪";
+        if (!details.firstButton.style || typeof details.firstButton.style !== "number" || details.firstButton.style > 3 || details.firstButton.style <= 0) details.firstButton.style = 2;
         if (!details.errors) details.errors = {};
         if (!details.errors.previous || typeof details.errors.previous !== "string") details.errors.previous = "This is the first page!";
         if (!details.errors.next || typeof details.errors.next !== "string") details.errors.next = "This is the last page!";
@@ -13,7 +20,7 @@ module.exports = class Setting {
         if (!details.nextButton.style || typeof details.nextButton.style !== "number" || details.nextButton.style > 3 || details.nextButton.style <= 0) details.nextButton.style = 1;
         if (!details.timeoutInSeconds || typeof details.timeoutInSeconds !== "number") details.timeoutInSeconds = 30;
         if (typeof details.displayPages !== "boolean") details.displayPages = true;
-        if (typeof details.isInteraction !== "boolean" ) throw new Error("details.isInteractions has to be mentioned! [easypaginate]")
+        if (typeof details.isInteraction !== "boolean" ) throw new Error("details.isInteractions has to be mentioned! [paginatocord]")
         this.details = details;
     }
 
@@ -27,12 +34,21 @@ module.exports = class Setting {
         if (!message) throw new Error("Message/Interaction arguement not given! [paginatocord]");
         if (!embeds || embeds.length < 0) throw new Error("Embeds given are invalid! [paginatocord]")
         try {
-            const { isInteraction, displayPages, nextButton, previousButton, timeoutInSeconds, errors } = this.details;
+            const { isInteraction, displayPages, nextButton, lastButton, firstButton, previousButton, timeoutInSeconds, errors, superSkip } = this.details;
             var user;
             if (isInteraction === true) user = message.user;
             else user = message.author;
             var currentPage = 0;
-            const buttons = new ActionRowBuilder().addComponents(
+            const buttons = new ActionRowBuilder()
+            if (superSkip === true) {
+                buttons.addComponents(
+                    new ButtonBuilder()
+                    .setCustomId("first")
+                    .setLabel(firstButton.text)
+                    .setStyle(firstButton.style),
+                )
+            }
+            buttons.addComponents(
                 new ButtonBuilder()
                 .setCustomId("previous")
                 .setLabel(previousButton.text)
@@ -41,7 +57,16 @@ module.exports = class Setting {
                 .setCustomId("next")
                 .setLabel(nextButton.text)
                 .setStyle(nextButton.style)
-            );
+            )
+            if (superSkip == true) {
+               buttons.addComponents(
+                new ButtonBuilder()
+                .setCustomId("last")
+                .setLabel(lastButton.text)
+                .setStyle(lastButton.style)
+               )
+            }
+                
             if (displayPages === true) {
                 embeds[0].setFooter({ text: `Powered by paginatocord ◆ ${currentPage+1}/${embeds.length}` });
             }
@@ -75,12 +100,31 @@ module.exports = class Setting {
                         await i.followUp({ content: errors.previous, ephemeral: true });
                     }
                 }
+
+                if (i.customId === "first") {
+                    currentPage = 0;
+                    if (displayPages) embeds[currentPage].setFooter({ text: `Powered by paginatocord ◆ ${currentPage + 1}/${embeds.length}` });
+                    if (isInteraction) {
+                        await message.editReply({ embeds: [embeds[currentPage]], components: [buttons] });
+                    } else {
+                        await sentMessage.edit({ embeds: [embeds[currentPage]], components: [buttons] });
+                    }
+                }
+
+                if (i.customId === "last") {
+                    currentPage = embeds.length - 1;
+                    if (displayPages) embeds[currentPage].setFooter({ text: `Powered by paginatocord ◆ ${currentPage + 1}/${embeds.length}` });
+                    if (isInteraction) {
+                        await message.editReply({ embeds: [embeds[currentPage]], components: [buttons] });
+                    } else {
+                        await sentMessage.edit({ embeds: [embeds[currentPage]], components: [buttons] });
+                    }
+                }
             
                 if (i.customId == "next") {
                     if (embeds[currentPage + 1]) {
                         currentPage = currentPage + 1;
                         if (displayPages) embeds[currentPage].setFooter({ text: `Powered by paginatocord ◆ ${currentPage + 1}/${embeds.length}` });
-            
                         if (isInteraction) {
                             await message.editReply({ embeds: [embeds[currentPage]], components: [buttons] });
                         } else {
@@ -90,7 +134,6 @@ module.exports = class Setting {
                         await i.followUp({ content: errors.next, ephemeral: true });
                     }
                 }
-            
                 collector.resetTimer();
             });
             
